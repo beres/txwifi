@@ -9,6 +9,8 @@ package main
 import (
 	"os"
 
+	"github.com/gin-contrib/cors"
+	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
 	"github.com/txn2/txwifi/iotwifi"
@@ -60,10 +62,12 @@ func main() {
 		r.GET("/stop", gin.WrapF(h.StopHandler))
 	}
 
-	// CORS
-	// headersOk := handlers.AllowedHeaders([]string{"Content-Type", "Authorization", "Content-Length", "X-Requested-With", "Accept", "Origin"})
-	// originsOk := handlers.AllowedOrigins([]string{"*"})
-	// methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS", "DELETE"})
+	r.Use(static.Serve("/", static.LocalFile("./static/", true)))
+	r.Use(cors.New(cors.Config{
+		AllowOrigins: []string{"*"},
+		AllowMethods: []string{"GET", "HEAD", "POST", "PUT", "OPTIONS", "DELETE"},
+		AllowHeaders: []string{"Content-Type", "Authorization", "Content-Length", "X-Requested-With", "Accept", "Origin"},
+	}))
 
 	// serve http
 	log.Info("HTTP Listening on " + port)

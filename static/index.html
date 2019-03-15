@@ -26,6 +26,11 @@
 <div class="container" id="status" >
 
 </div>
+<div class="form-group">
+    <button class="form-group" id="submit" onclick="start()">start</button>
+    <button class="form-group" id="submit" onclick="stop()">stop</button>
+</div>
+
 <script src="/jquery-3.3.1.min.js"></script>
 <script  type = "text/javascript" language = "javascript">
     function getStatus() {
@@ -69,6 +74,18 @@
             }
         });
 
+    }
+    function start() {
+        $.getJSON("/start", function (response) {
+           console.log(response)
+           $('#status').text(response['payload'])
+        })
+    }
+    function stop() {
+        $.getJSON("/stop", function (response) {
+           console.log(response)
+           $('#status').text(response['payload'])
+        })
     }
 
 </script>

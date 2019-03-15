@@ -39,9 +39,7 @@ func NewHttpHandler(setupCfg *SetupCfg, disabled bool) *HttpHandler {
 
 	go HandleLog(messages)
 	go RunWifi(messages, signal, setupCfg)
-	if disabled {
-		signal <- "OFF"
-	} else {
+	if !disabled {
 		if WpaSupplicantHasNetowrkConfig(setupCfg.WpaSupplicantCfg.CfgFile) {
 			signal <- "CL"
 		} else {

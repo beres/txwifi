@@ -1,7 +1,7 @@
 
 
-build_arm:
-	GOARCH=arm GOARM=5 GOOS=linux  go build
+build_arm: clean
+	GOARCH=arm GOARM=5 GOOS=linux  go build -o server_gin.arm examples/server_gin.go
 
 build_x86: clean
 	go build -o server_gorilla examples/server_gorilla.go
