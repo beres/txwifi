@@ -12,5 +12,7 @@
     },
     "wpa_supplicant_cfg": {
 	"cfg_file": "/etc/wpa_supplicant/wpa_supplicant.conf"
-    }
+    },
+    "dont_fallback_to_ap_mode": true,
+    "allow_start_stop_mode": true
 }

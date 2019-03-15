@@ -2,13 +2,10 @@ package iotwifi
 
 import (
 	"os/exec"
-
-	"github.com/bhoriuchi/go-bunyan/bunyan"
 )
 
 // Command for device network commands.
 type Command struct {
-	Log      bunyan.Logger
 	Runner   CmdRunner
 	SetupCfg *SetupCfg
 }
@@ -51,7 +48,6 @@ func (c *Command) CheckApInterface() {
 func (c *Command) StartWpaSupplicant() {
 
 	args := []string{
-		"-d",
 		"-Dnl80211",
 		"-iwlan0",
 		"-c" + c.SetupCfg.WpaSupplicantCfg.CfgFile,
@@ -74,8 +70,29 @@ func (c *Command) StartDnsmasq() {
 		"--dhcp-vendorclass=" + c.SetupCfg.DnsmasqCfg.VendorClass,
 		"--dhcp-authoritative",
 		"--log-facility=-",
+		"--interface=uap0",
+		"--port=0",
 	}
 
 	cmd := exec.Command("dnsmasq", args...)
 	go c.Runner.ProcessCmd("dnsmasq", cmd)
+}
+
+func (c *Command) StartHostAPD() {
+	args := []string{
+		"/etc/hostapd/hostapd.conf",
+	}
+
+	cmd := exec.Command("hostapd", args...)
+	go c.Runner.ProcessCmd("hostapd", cmd)
+}
+
+func (c *Command) killIt(it string) {
+	args := []string{
+		it,
+	}
+
+	cmd := exec.Command("killall", args...)
+	cmdId := "killall " + it
+	c.Runner.ProcessCmd(cmdId, cmd)
 }

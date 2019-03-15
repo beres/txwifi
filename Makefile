@@ -1,26 +1,12 @@
-IMAGE    ?= cjimti/iotwifi
-NAME     ?= txwifi
-VERSION  ?= 1.0.4
-
-all: build push
-
-dev: dev_build dev_run
-
-build:
-	docker build -t $(IMAGE):latest .
-	docker build -t $(IMAGE):arm32v6-$(VERSION) .
-
-push:
-	docker build -t $(IMAGE):latest .
-	docker build -t $(IMAGE):arm32v6-$(VERSION) .
-
-dev_build:
-	docker build -t $(IMAGE) ./dev/
-
-dev_run:
-	sudo docker run --rm -it --privileged --network=host \
-                   -v $(CURDIR):/go/src/github.com/txn2/txwifi \
-                   -w /go/src/github.com/txn2/txwifi \
-                   --name=$(NAME) $(IMAGE):latest
 
 
+build_arm:
+	GOARCH=arm GOARM=5 GOOS=linux  go build
+
+build_x86: clean
+	go build -o server_gorilla examples/server_gorilla.go
+	go build -o server_gin examples/server_gin.go
+
+clean:
+	@rm -f server_gorilla
+	@rm -f server_gin

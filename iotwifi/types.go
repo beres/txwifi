@@ -2,9 +2,11 @@ package iotwifi
 
 // SetupCfg is the main configuration structure.
 type SetupCfg struct {
-	DnsmasqCfg       DnsmasqCfg       `json:"dnsmasq_cfg"`
-	HostApdCfg       HostApdCfg       `json:"host_apd_cfg"`
-	WpaSupplicantCfg WpaSupplicantCfg `json:"wpa_supplicant_cfg"`
+	DnsmasqCfg           DnsmasqCfg       `json:"dnsmasq_cfg"`
+	HostApdCfg           HostApdCfg       `json:"host_apd_cfg"`
+	WpaSupplicantCfg     WpaSupplicantCfg `json:"wpa_supplicant_cfg"`
+	DontFallBackToApMode bool             `json:"dont_fallback_to_ap_mode"`
+	AllowStartStop       bool             `json:"allow_start_stop_mode"`
 }
 
 // DnsmasqCfg configures dnsmasq and is used by SetupCfg.
